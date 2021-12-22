@@ -1,0 +1,55 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+start = "0"
+BinArray = np.array([start])
+LenBinArray = np.array(len(BinArray[0]))
+n=70
+
+for i in range(2,n+1):
+   j = 0
+   temp = ""
+   curr = ""
+   count = 0
+   while j <len(BinArray[i-2]):
+      if curr =="":
+         curr=BinArray[i-2][j]
+         count=1
+         j+=1
+      elif curr == BinArray[i-2][j]:
+         count+=1
+         j+=1
+      else:
+         temp+= curr+str(bin(count))[2:]
+         curr=""
+         count = 0
+   temp+=curr+str(bin(count))[2:]
+
+   BinArray = np.append(BinArray, temp)
+   LenBinArray = np.append(LenBinArray, len(BinArray[i-1])) 
+   print(str(i)+' => '+str(LenBinArray[i-1]) )
+   
+print(LenBinArray)
+
+RatioBinArray = np.array(LenBinArray[1]/LenBinArray[0])
+for i in range(1,n-1):
+  RatioBinArray = np.append(RatioBinArray, LenBinArray[i+1]/LenBinArray[i])
+ print(RatioBinArray)
+ 
+R2Cn=np.array([0])
+R2Cn = np.append(R2Cn, RatioBinArray)
+print(R2Cn)
+x = np.array([0])
+for i in range(1,n):
+    x=np.append(x, i)
+print(x)
+
+plt.rcParams["figure.figsize"] = (10,4)
+plt.plot(x[3:],R2Cn[3:],'k.', markersize='7')
+plt.ylabel('Ratio b/w adjacent terms (R2C)n',fontsize='12')
+plt.grid(True)
+plt.axhline(R2Cn[n-1], 0, n,color='orange',linestyle='-.', linewidth=1.5)
+plt.xticks([0, 3, 10, 20, 30, 40, 50, 60, 70])
+plt.yticks([R2Cn[n-1], 1.2, 1.3, 1.4, 1.5, 1.6])
+plt.text(60,1.5,"first term : "+start,fontsize=18,color="black",verticalalignment ='center', horizontalalignment ='center',bbox ={'facecolor':'white', 'pad':10})            
+plt.show()
